@@ -98,7 +98,9 @@ class MainActivity : AppCompatActivity() {
 
 
     /**
+     * *********************************************************************************
      * Below are Methods for Dialog boxes for future reference
+     * *********************************************************************************
      */
 
 //    // Method to create an alert Dialog box
@@ -142,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 //        alertDialog.show() // show the dialog to the UI
 //    }
 
-//    // Custom Progress Bar fMethod
+//    // Custom Progress Bar Method
 //    private fun customProgressDialogFunction() {
 //        val customProgress = Dialog(this)
 //        // Set the screen content from a layout resource
