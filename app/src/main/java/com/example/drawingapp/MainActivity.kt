@@ -1,5 +1,6 @@
 package com.example.drawingapp
 
+import android.app.AlertDialog
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import com.example.drawingapp.view.DrawingView
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Method to show the size of the brush in a dialog box that pops up on the screen
+    // This is a custom dialog example as well. Be sure to create the XML before
     private fun showBrushSizeChooserDialog() {
         val brushDialog = Dialog(this)
         brushDialog.setContentView(R.layout.dialog_brush_size)
@@ -92,4 +95,70 @@ class MainActivity : AppCompatActivity() {
             aImageButtonCurrentPaint = view
         }
     }
+
+
+    /**
+     * Below are Methods for Dialog boxes for future reference
+     */
+
+//    // Method to create an alert Dialog box
+//    private fun alertDialogFunction() {
+//        // Use the Builder class to assign to a variable for construction
+//        val builder = AlertDialog.Builder(this)
+//        // sets the title for the Alert Dialog box
+//        builder.setTitle("Alert")
+//        // sets the message
+//        builder.setMessage("This is Alert Dialog.")
+//        // sets the icon for the dialog
+//        builder.setIcon(android.R.drawable.ic_dialog_alert)
+//
+//        // performing positive action
+//        builder.setPositiveButton("Yes") {
+//            dialogInterface, which ->
+//            Toast.makeText(applicationContext,
+//                "clicked Yes", Toast.LENGTH_LONG).show()
+//            dialogInterface.dismiss() // dialog will be dismissed
+//        }
+//
+//        // performing cancel action
+//        builder.setNeutralButton("Cancel"){dialogInterface, which ->
+//            Toast.makeText(
+//                applicationContext,
+//                "click cancel\n operation cancel", Toast.LENGTH_LONG).show()
+//            dialogInterface.dismiss()
+//        }
+//
+//        // performing negative action
+//        builder.setNegativeButton("No") {dialogInterface, which ->
+//            Toast.makeText(applicationContext,
+//                "clicked No", Toast.LENGTH_LONG).show()
+//            dialogInterface.dismiss()
+//        }
+//
+//        // Once we finish setting up dialog, we Create the AlertDialog
+//        val alertDialog: AlertDialog = builder.create()
+//        // set Other dialog properties
+//        alertDialog.setCancelable(false) // won't allow user to cancel
+//        alertDialog.show() // show the dialog to the UI
+//    }
+
+//    // Custom Progress Bar fMethod
+//    private fun customProgressDialogFunction() {
+//        val customProgress = Dialog(this)
+//        // Set the screen content from a layout resource
+//        // The resource will be inflated from the xml
+//        customProgress.setContentView(R.id.custom_progress)
+//
+//        customProgress.show()
+//    }
+
+
+
+    /**
+     * snackbar creation
+     * image_button.setOnClickListener {view ->
+     * Snackbar.make(view, "Some Text", Snackbar)}
+     */
+
 }
+
