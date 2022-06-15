@@ -1,14 +1,17 @@
 package com.example.drawingapp
 
+import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import com.example.drawingapp.view.DrawingView
@@ -17,6 +20,45 @@ class MainActivity : AppCompatActivity() {
 
     private var drawingView: DrawingView? = null
     private var aImageButtonCurrentPaint: ImageButton? = null
+
+    // assigning our intent to go to the media of our device
+    // want to be able to replace our imageView with an image in the gallery
+    val openGalleryLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+            if(result.resultCode == RESULT_OK && result.data != null) {
+                val imageBackground: ImageView = findViewById(R.id.iv_background)
+                // gives us the location of the data
+                imageBackground.setImageURI(result.data?.data)
+            }
+        }
+
+    // request permission check
+    val requestPermission: ActivityResultLauncher<Array<String>> =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            permissions ->
+            permissions.entries.forEach{
+                val permissionName = it.key // type string
+                val isGranted = it.value // type Boolean
+
+                if(isGranted) { // if permission is granted
+                   Toast.makeText(this@MainActivity,
+                   "Permission granted now you can read the storage files.",
+                   Toast.LENGTH_LONG).show()
+
+                    // An intent to go to the External Storage of our Device
+                    val pickIntent = Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    openGalleryLauncher.launch(pickIntent)
+                } else {
+                    if(permissionName == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                        Toast.makeText(this@MainActivity,
+                        "Permission Denied.",
+                        Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +77,21 @@ class MainActivity : AppCompatActivity() {
         aImageButtonCurrentPaint!!.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.pallet_pressed))
 
+        // Undo button functionality
+        val ibUndo: ImageButton = findViewById(R.id.ib_undo)
+        ibUndo.setOnClickListener {
+            drawingView?.onClickUndo()
+        }
+
         // finding the id of the brush dialog box and setting the onclicklistener for pop up
         val ib_brush_dialog: ImageButton = findViewById(R.id.ib_brush_dialog)
         ib_brush_dialog.setOnClickListener {
             showBrushSizeChooserDialog()
+        }
+
+        val ibGallery: ImageButton = findViewById(R.id.ib_gallery)
+        ibGallery.setOnClickListener {
+            requestStoragePermission()
         }
     }
 
@@ -93,6 +146,37 @@ class MainActivity : AppCompatActivity() {
             )
             // making sure the current button is eqal to the view
             aImageButtonCurrentPaint = view
+        }
+    }
+
+    // show the alert dialog box with a title and a message
+    private fun showRationaleDialog(
+        title: String,
+        message: String
+    ) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Cancel") {dialog, _->
+                dialog.dismiss()
+            }
+        builder.create().show()
+    }
+
+    // Method to request external storage
+    private fun requestStoragePermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+            ))
+        {
+            showRationaleDialog("Kids Creation App", "Kids Creation App" +
+            " needs to Access Your External Storage, otherwise" +
+            " cannot access background image...")
+        } else {
+            requestPermission.launch(arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            // TODO - Add writing external storage permission
+            ))
         }
     }
 

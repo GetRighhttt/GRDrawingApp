@@ -31,10 +31,21 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs){
 
     // variable declared for line persistence; lines stay on screen
     private var aPaths = ArrayList<CustomPath>()
+    // list of custom paths to undo or store the paths
+    private var aUndoPaths = ArrayList<CustomPath>()
 
     // Initializes the setup as soon as the class is called
     init {
         setupDrawingApp()
+    }
+
+    // Method to undo the path
+    // removes the path length - 1
+    fun onClickUndo() {
+        if(aPaths.size > 0) {
+            aUndoPaths.add(aPaths.removeAt(aPaths.size - 1))
+            invalidate()
+        }
     }
 
     // method to put into our init statement that assigns majority of variables
