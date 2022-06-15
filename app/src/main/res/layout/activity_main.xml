@@ -6,17 +6,30 @@
     android:layout_height="match_parent"
     android:background="#A5A28F"
     tools:context=".MainActivity">
-
-    <com.example.drawingapp.view.DrawingView
-        android:id="@+id/drawing_view"
+    
+    <FrameLayout
+        android:id="@+id/fl_drawing_view_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="5dp"
-        android:background="@drawable/background_dv"
+        android:padding="1dp"
+        android:background="@drawable/chicagoforweatherapp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/ll_paint_colors"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <com.example.drawingapp.view.DrawingView
+        android:id="@+id/drawing_view"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_dv" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/ll_paint_colors"
@@ -26,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/ib_brush_dialog"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/drawing_view">
+        app:layout_constraintTop_toBottomOf="@id/fl_drawing_view_container">
 
         <ImageButton
             android:layout_width="25dp"
@@ -35,7 +48,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="#BF4C0E"
             android:scaleType="fitXY"
-            android:background="#BF4C0E"/>
+            android:background="#BF4C0E"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -44,7 +58,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/olive"
             android:scaleType="fitXY"
-            android:background="@color/olive"/>
+            android:background="@color/olive"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -53,7 +68,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/green"
             android:scaleType="fitXY"
-            android:background="@color/green"/>
+            android:background="@color/green"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -62,7 +78,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/yellow"
             android:scaleType="fitXY"
-            android:background="@color/yellow"/>
+            android:background="@color/yellow"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -71,7 +88,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/blue"
             android:scaleType="fitXY"
-            android:background="@color/blue"/>
+            android:background="@color/blue"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -80,7 +98,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/red"
             android:scaleType="fitXY"
-            android:background="@color/red"/>
+            android:background="@color/red"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -89,7 +108,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/purple_500"
             android:scaleType="fitXY"
-            android:background="@color/purple_500"/>
+            android:background="@color/purple_500"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -98,7 +118,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/black"
             android:scaleType="fitXY"
-            android:background="@color/black"/>
+            android:background="@color/black"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -107,7 +128,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/maroon"
             android:scaleType="fitXY"
-            android:background="@color/maroon"/>
+            android:background="@color/maroon"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -116,7 +138,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/white"
             android:scaleType="fitXY"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -125,7 +148,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/pink"
             android:scaleType="fitXY"
-            android:background="@color/pink"/>
+            android:background="@color/pink"
+            android:onClick="paintClicked"/>
 
         <ImageButton
             android:layout_width="25dp"
@@ -134,7 +158,8 @@
             android:src="@drawable/pallet_normal"
             android:tag="@color/sucker"
             android:scaleType="fitXY"
-            android:background="@color/sucker"/>
+            android:background="@color/sucker"
+            android:onClick="paintClicked"/>
 
     </LinearLayout>
 
