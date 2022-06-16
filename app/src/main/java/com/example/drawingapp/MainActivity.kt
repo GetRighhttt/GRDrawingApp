@@ -4,6 +4,11 @@ import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Color.WHITE
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,6 +20,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import com.example.drawingapp.view.DrawingView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,10 +101,23 @@ class MainActivity : AppCompatActivity() {
             showBrushSizeChooserDialog()
         }
 
+        // Request to store button in gallery
         val ibGallery: ImageButton = findViewById(R.id.ib_gallery)
         ibGallery.setOnClickListener {
             requestStoragePermission()
         }
+
+//        // method to store Bitmap in file
+//        val ibSave: ImageButton = findViewById(R.id.ib_store)
+//        ibSave.setOnClickListener {
+//            if(isReadStorageAllowed()) {
+//                {
+//                    val flDrawingView: FrameLayout =
+//                        findViewById(R.id.fl_drawing_view_container)
+//                    suspend { saveBitmapFile(getBitmapFromView(flDrawingView)) }
+//                }
+//            }
+//        }
     }
 
     // Method to show the size of the brush in a dialog box that pops up on the screen
@@ -163,6 +188,14 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
+    private fun isReadStorageAllowed(): Boolean {
+        val result = ContextCompat.checkSelfPermission(this,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
+
     // Method to request external storage
     private fun requestStoragePermission() {
         if(ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -174,11 +207,70 @@ class MainActivity : AppCompatActivity() {
             " cannot access background image...")
         } else {
             requestPermission.launch(arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            // TODO - Add writing external storage permission
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
             ))
         }
     }
+
+    // want to be able to combine the colors, image, and layers into a bitmap..
+    // creating a sandwich
+    private fun getBitmapFromView(view: View) : Bitmap {
+        val returnedBitmap = Bitmap.createBitmap(
+            view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(returnedBitmap)
+        val bgDrawable = view.background
+        if(bgDrawable != null) {
+            bgDrawable.draw(canvas)
+        } else {
+            canvas.drawColor(Color.WHITE)
+        }
+        view.draw(canvas)
+        return returnedBitmap
+    }
+
+    // save the bitmap file if everything goes right
+    // useing Coroutines, and Outputstreams
+    private suspend fun saveBitmapFile(aBitmap: Bitmap?): String {
+        var result = ""
+        withContext(Dispatchers.IO) {
+            if(aBitmap != null) {
+                try{
+                    val bytes = ByteArrayOutputStream()
+                    aBitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
+
+                    val f = File(externalCacheDir?.absoluteFile.toString() +
+                    File.separator + "KidsCreation" +
+                            System.currentTimeMillis() / 1000 + ".png"
+                    )
+
+                    val fo = FileOutputStream(f)
+                    fo.write(bytes.toByteArray())
+                    fo.close()
+
+                    result = f.absolutePath
+
+                    runOnUiThread {
+                        if(result.isNotEmpty()) {
+                            Toast.makeText(this@MainActivity,
+                                "File saved successfully",
+                            Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@MainActivity,
+                                "File not saved successfully",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    result = ""
+                    e.printStackTrace()
+                }
+            }
+        }
+        return result
+    }
+}
 
 
     /**
@@ -246,5 +338,5 @@ class MainActivity : AppCompatActivity() {
      * Snackbar.make(view, "Some Text", Snackbar)}
      */
 
-}
+
 

@@ -205,6 +205,15 @@
             android:scaleType="fitXY"
             android:backgroundTint="@color/white"/>
 
+        <ImageButton
+            android:id="@+id/ib_store"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_baseline_save_24"
+            android:scaleType="fitXY"
+            android:backgroundTint="@color/white"/>
+
 
     </LinearLayout>
 
