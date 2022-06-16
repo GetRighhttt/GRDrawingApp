@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Color.WHITE
+import android.media.MediaScannerConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private var drawingView: DrawingView? = null
     private var aImageButtonCurrentPaint: ImageButton? = null
+    var customProgressDialog : Dialog? = null
 
     // assigning our intent to go to the media of our device
     // want to be able to replace our imageView with an image in the gallery
@@ -255,6 +257,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(this@MainActivity,
                                 "File saved successfully",
                             Toast.LENGTH_SHORT).show()
+                            shareImage(result)
                         } else {
                             Toast.makeText(this@MainActivity,
                                 "File not saved successfully",
@@ -270,6 +273,34 @@ class MainActivity : AppCompatActivity() {
         }
         return result
     }
+
+    // method to show the progress dialog
+    private fun showProgressDialog() {
+        customProgressDialog = Dialog(this@MainActivity)
+        customProgressDialog?.setContentView(R.layout.dialog_custom_progress)
+        customProgressDialog?.show()
+    }
+
+    // method to cancel the progress dialog
+    private fun cancelProgressDialog() {
+        if(customProgressDialog != null)
+            customProgressDialog?.dismiss()
+        customProgressDialog = null
+    }
+
+    // method to share the image with a media service(email, social medai, etc.)
+    private fun shareImage(result: String) {
+
+        MediaScannerConnection.scanFile(this, arrayOf(result), null) {
+            path, uri ->
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            shareIntent.type = "image/png"
+            startActivity(Intent.createChooser(shareIntent, "Share"))
+        }
+    }
+
 }
 
 
