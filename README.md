@@ -12,13 +12,4 @@ dialog boxes for user-interactive purposes.
 
 ### CODE PREVIEW : 
 
-
-![2022-07-30](https://user-images.githubusercontent.com/105057858/181904259-16789034-000b-412e-9064-d87360807583.png)
-
-<hr>
-
-### APP PREVIEW:
-
-![2022-07-30 (1)](https://user-images.githubusercontent.com/105057858/181904382-e82f15f9-88de-4c56-b112-4ceb3e2bb329.png)
-
-<hr>
+https://github.com/GetRighhttt/GRDrawingApp/assets/105057858/b0ca73ed-1b0a-4563-81c4-047a7fcb7ee5
