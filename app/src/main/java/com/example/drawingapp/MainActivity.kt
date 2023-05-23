@@ -274,20 +274,6 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
-    // method to show the progress dialog
-    private fun showProgressDialog() {
-        customProgressDialog = Dialog(this@MainActivity)
-        customProgressDialog?.setContentView(R.layout.dialog_custom_progress)
-        customProgressDialog?.show()
-    }
-
-    // method to cancel the progress dialog
-    private fun cancelProgressDialog() {
-        if(customProgressDialog != null)
-            customProgressDialog?.dismiss()
-        customProgressDialog = null
-    }
-
     // method to share the image with a media service(email, social medai, etc.)
     private fun shareImage(result: String) {
 
@@ -302,72 +288,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-
-    /**
-     * *********************************************************************************
-     * Below are Methods for Dialog boxes for future reference
-     * *********************************************************************************
-     */
-
-//    // Method to create an alert Dialog box
-//    private fun alertDialogFunction() {
-//        // Use the Builder class to assign to a variable for construction
-//        val builder = AlertDialog.Builder(this)
-//        // sets the title for the Alert Dialog box
-//        builder.setTitle("Alert")
-//        // sets the message
-//        builder.setMessage("This is Alert Dialog.")
-//        // sets the icon for the dialog
-//        builder.setIcon(android.R.drawable.ic_dialog_alert)
-//
-//        // performing positive action
-//        builder.setPositiveButton("Yes") {
-//            dialogInterface, which ->
-//            Toast.makeText(applicationContext,
-//                "clicked Yes", Toast.LENGTH_LONG).show()
-//            dialogInterface.dismiss() // dialog will be dismissed
-//        }
-//
-//        // performing cancel action
-//        builder.setNeutralButton("Cancel"){dialogInterface, which ->
-//            Toast.makeText(
-//                applicationContext,
-//                "click cancel\n operation cancel", Toast.LENGTH_LONG).show()
-//            dialogInterface.dismiss()
-//        }
-//
-//        // performing negative action
-//        builder.setNegativeButton("No") {dialogInterface, which ->
-//            Toast.makeText(applicationContext,
-//                "clicked No", Toast.LENGTH_LONG).show()
-//            dialogInterface.dismiss()
-//        }
-//
-//        // Once we finish setting up dialog, we Create the AlertDialog
-//        val alertDialog: AlertDialog = builder.create()
-//        // set Other dialog properties
-//        alertDialog.setCancelable(false) // won't allow user to cancel
-//        alertDialog.show() // show the dialog to the UI
-//    }
-
-//    // Custom Progress Bar Method
-//    private fun customProgressDialogFunction() {
-//        val customProgress = Dialog(this)
-//        // Set the screen content from a layout resource
-//        // The resource will be inflated from the xml
-//        customProgress.setContentView(R.id.custom_progress)
-//
-//        customProgress.show()
-//    }
-
-
-
-    /**
-     * snackbar creation
-     * image_button.setOnClickListener {view ->
-     * Snackbar.make(view, "Some Text", Snackbar)}
-     */
 
 
 
