@@ -8,36 +8,38 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Color.WHITE
 import android.media.MediaScannerConnection
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.lifecycle.lifecycleScope
 import com.example.drawingapp.view.DrawingView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
     private var drawingView: DrawingView? = null
     private var aImageButtonCurrentPaint: ImageButton? = null
-    var customProgressDialog : Dialog? = null
 
     // assigning our intent to go to the media of our device
     // want to be able to replace our imageView with an image in the gallery
-    val openGalleryLauncher: ActivityResultLauncher<Intent> =
+    private val openGalleryLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result ->
             if(result.resultCode == RESULT_OK && result.data != null) {
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     // request permission check
-    val requestPermission: ActivityResultLauncher<Array<String>> =
+    private val requestPermission: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
             permissions ->
             permissions.entries.forEach{
@@ -109,17 +111,21 @@ class MainActivity : AppCompatActivity() {
             requestStoragePermission()
         }
 
-//        // method to store Bitmap in file
-//        val ibSave: ImageButton = findViewById(R.id.ib_store)
-//        ibSave.setOnClickListener {
-//            if(isReadStorageAllowed()) {
-//                {
-//                    val flDrawingView: FrameLayout =
-//                        findViewById(R.id.fl_drawing_view_container)
-//                    suspend { saveBitmapFile(getBitmapFromView(flDrawingView)) }
-//                }
-//            }
-//        }
+        // method to store Bitmap in file
+        val ibSave: ImageButton = findViewById(R.id.ib_store)
+        //set onclick listener
+        ibSave.setOnClickListener{
+            //check if permission is allowed
+            if (isReadStorageAllowed()){
+                //launch a coroutine block
+                lifecycleScope.launch {
+                    //reference the frame layout
+                    val flDrawingView:FrameLayout = findViewById(R.id.fl_drawing_view_container)
+                    //Save the image to the device
+                    saveBitmapFile(getBitmapFromView(flDrawingView))
+                }
+            }
+        }
     }
 
     // Method to show the size of the brush in a dialog box that pops up on the screen
@@ -232,7 +238,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // save the bitmap file if everything goes right
-    // useing Coroutines, and Outputstreams
+    // using Coroutines, and Output streams
     private suspend fun saveBitmapFile(aBitmap: Bitmap?): String {
         var result = ""
         withContext(Dispatchers.IO) {
@@ -274,7 +280,7 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
-    // method to share the image with a media service(email, social medai, etc.)
+    // method to share the image with a media service(email, social media, etc.)
     private fun shareImage(result: String) {
 
         MediaScannerConnection.scanFile(this, arrayOf(result), null) {

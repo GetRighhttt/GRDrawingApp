@@ -212,7 +212,8 @@
             android:layout_margin="5dp"
             android:src="@drawable/ic_baseline_save_24"
             android:scaleType="fitXY"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white"
+            android:clickable="true"/>
 
 
     </LinearLayout>
